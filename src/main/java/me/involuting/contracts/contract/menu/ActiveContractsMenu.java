@@ -66,7 +66,7 @@ public class ActiveContractsMenu extends Menu {
             return;
         }
 
-        // ACTIVE CONTRACTS
+
         int index = 0;
 
         for (Contract contract : active) {
