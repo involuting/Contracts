@@ -9,44 +9,48 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 
 import java.util.UUID;
+
 @Getter
 @Setter
 public class Contract {
 
     private final UUID uuid;
     private final UUID creator;
+
     private UUID assignedTo;
 
     private ContractType type;
+    private ContractStatus status;
 
     private Reward rewards;
 
     private EntityType mob;
 
     private Material targetBlock;
-
-    @Getter @Setter ContractStatus status;
-
-    @Getter @Setter  private String target;
-    @Getter @Setter private int required;
-    @Getter @Setter private int progress;
-
-    @Getter @Setter  private long expiry;
-
-    @Getter @Setter private int reward;
-    @Getter @Setter
     private Material targetItem;
-
-    @Getter @Setter
     private Material deliverItem;
 
+    private String target;
+
+    private int required;
+    private int progress;
+
+    private long expiry;
+    private int reward;
 
     public Contract(UUID uuid, UUID creator) {
         this.uuid = uuid;
         this.creator = creator;
         this.status = ContractStatus.ACTIVE;
+        this.progress = 0;
     }
 
 
+    public boolean isAssigned() {
+        return assignedTo != null;
+    }
 
+    public boolean isActive() {
+        return status == ContractStatus.INPROGRESS;
+    }
 }

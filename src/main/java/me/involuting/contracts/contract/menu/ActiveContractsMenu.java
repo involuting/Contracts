@@ -21,9 +21,9 @@ public class ActiveContractsMenu extends Menu {
     private final ContractManager contractManager;
 
     private static final int[] SLOTS = {
-            10,11,12,13,14,15,16,
-            19,20,21,22,23,24,25,
-            28,29,30,31,32,33,34
+            10, 11, 12, 13, 14, 15, 16,
+            19, 20, 21, 22, 23, 24, 25,
+            28, 29, 30, 31, 32, 33, 34
     };
 
     public ActiveContractsMenu(ContractManager contractManager, Player player) {
@@ -36,14 +36,19 @@ public class ActiveContractsMenu extends Menu {
 
         Player player = getPlayer();
 
-        List<Contract> active = contractManager.getAll()
+        List<Contract> activeContracts = contractManager.getAll()
                 .stream()
-                .filter(c -> c.getStatus() == ContractStatus.INPROGRESS)
-                .filter(c -> player.getUniqueId().equals(c.getAssignedTo()))
+                .filter(contract -> contract.getStatus() == ContractStatus.INPROGRESS)
+                .filter(contract -> player.getUniqueId().equals(contract.getAssignedTo()))
                 .collect(Collectors.toList());
 
+        renderContracts(foreground, activeContracts);
+    }
 
-        if (active.isEmpty()) {
+    private void renderContracts(ForegroundLayer foreground, List<Contract> contracts) {
+
+
+        if (contracts.isEmpty()) {
 
             ItemStack empty = new ItemStack(Material.BARRIER);
             var meta = empty.getItemMeta();
@@ -62,20 +67,12 @@ public class ActiveContractsMenu extends Menu {
                     return empty;
                 }
             });
-
             return;
         }
 
 
-        int index = 0;
-
-        for (Contract contract : active) {
-
-            if (index >= SLOTS.length) break;
-
-            foreground.set(SLOTS[index], new ContractButton(contract));
-
-            index++;
+        for (int i = 0; i < contracts.size() && i < SLOTS.length; i++) {
+            foreground.set(SLOTS[i], new ContractButton(contracts.get(i)));
         }
     }
 }

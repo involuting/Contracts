@@ -10,8 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-
-import java.util.Collection;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 
 public class WorldListener implements Listener {
 
@@ -19,7 +18,7 @@ public class WorldListener implements Listener {
     private final ContractCompletionManager completionManager;
 
     public WorldListener(ContractManager contractManager,
-                              ContractCompletionManager completionManager) {
+                         ContractCompletionManager completionManager) {
         this.contractManager = contractManager;
         this.completionManager = completionManager;
     }
@@ -30,29 +29,47 @@ public class WorldListener implements Listener {
         Player player = event.getPlayer();
         Material broken = event.getBlock().getType();
 
-        Collection<Contract> contracts = contractManager.getAll();
+        for (Contract contract : contractManager.getAll()) {
 
-        for (Contract contract : contracts) {
-
-            if (contract.getStatus() != ContractStatus.ACTIVE) continue;
-
+            if (contract.getStatus() != ContractStatus.INPROGRESS) continue;
             if (contract.getType() != ContractType.BREAKBLOCK) continue;
-
             if (contract.getAssignedTo() == null) continue;
-
             if (!contract.getAssignedTo().equals(player.getUniqueId())) continue;
 
-            if (contract.getTargetBlock() != broken) continue;
+            if (contract.getTargetBlock() == null || contract.getTargetBlock() != broken) continue;
 
             contract.setProgress(contract.getProgress() + 1);
 
             player.sendMessage("§aBlock Contract Progress: §f"
                     + contract.getProgress() + "/" + contract.getRequired());
 
+
             if (contract.getProgress() >= contract.getRequired()) {
                 completionManager.complete(contract, player);
+                return;
             }
-        }
-    }
-}
 
+
+
+        }
+
+
+    }
+
+    @EventHandler
+    public void onPickup(PlayerPickupItemEvent event) {
+
+        Material item = event.getItem().getItemStack().getType();
+
+        contractManager.getAll().forEach(contract -> {
+
+            if (contract.getStatus() != ContractStatus.ACTIVE) return;
+            if (contract.getType() != ContractType.COLLECT) return;
+            if (!contract.getTarget().equalsIgnoreCase(item.name())) return;
+
+            contract.setProgress(contract.getProgress() + event.getItem().getItemStack().getAmount());
+        });
+    }
+
+
+}
