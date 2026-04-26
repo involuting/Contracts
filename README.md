@@ -3,7 +3,7 @@
 A fully dynamic Minecraft contract system that generates PvP, PvE, and mining contracts automatically.  
 Designed for survival, RPG, and economy servers.
 
-## ⚙️ Features
+## Features
 
 - Dynamic contract generation (no config required)
 -  Player kill contracts
