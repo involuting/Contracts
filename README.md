@@ -30,7 +30,7 @@ Once completed, players receive rewards automatically.
 
 ## Contract Types
 
-### ⚔ Player Contracts
+### Player Contracts
 Kill a specific player a set number of times.
 
 ### Mob Contracts
