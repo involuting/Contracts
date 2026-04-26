@@ -1,0 +1,19 @@
+name: Contracts
+version: 1.0
+main: me.involuting.contracts.Contracts
+api-version: 1.21.11
+author: involuting
+description: Dynamic Contract System
+
+commands:
+  contracts:
+    description: Open contracts menu
+    usage: /contracts
+
+permissions:
+  contracts.use:
+    description: Allows using contracts system
+    default: true
+  contracts.admin:
+    description: Admin control for contracts
+    default: op
