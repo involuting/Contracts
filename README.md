@@ -57,7 +57,7 @@ Mine specific blocks such as:
 
 
 
-## 💰 Rewards
+## Rewards
 
 Rewards are automatically calculated and can include:
 - Money (Vault integration)
@@ -65,7 +65,7 @@ Rewards are automatically calculated and can include:
 
 
 
-## 🖥️ GUI System Improvements
+## GUI System Improvements
 
 - Safe contract rendering with null-check protection
 - Prevents GUI crashes when contract data is missing
